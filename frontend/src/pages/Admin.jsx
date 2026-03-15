@@ -2,6 +2,13 @@ import { useState, useEffect } from "react";
 import api from "../api/api";
 
 const Admin = () => {
+  const [certificates, setCertificates] = useState([]);
+
+  const [certificateTitle, setCertificateTitle] = useState("");
+  const [certificateIssuer, setCertificateIssuer] = useState("");
+  const [certificateImage, setCertificateImage] = useState(null);
+  const [certificatePreview, setCertificatePreview] = useState("");
+
   const [projects, setProjects] = useState([]);
   const [skills, setSkills] = useState([]);
   const [education, setEducation] = useState([]);
@@ -31,6 +38,15 @@ const Admin = () => {
   const [editEduId, setEditEduId] = useState(null);
 
   const token = localStorage.getItem("token");
+
+  const fetchCertificates = async () => {
+    try {
+      const res = await api.get("/certificates");
+      setCertificates(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const fetchProjects = async () => {
     try {
@@ -77,7 +93,59 @@ const Admin = () => {
     fetchSkills();
     fetchEducation();
     fetchProfilePhoto();
+    fetchCertificates();
   }, []);
+
+  const handleCertificateImageChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setCertificateImage(file);
+    setCertificatePreview(URL.createObjectURL(file));
+  };
+
+  const handleAddCertificate = async (e) => {
+    e.preventDefault();
+
+    try {
+      const formData = new FormData();
+      formData.append("title", certificateTitle);
+      formData.append("issuer", certificateIssuer);
+      formData.append("image", certificateImage);
+
+      await api.post("/certificates", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setCertificateTitle("");
+      setCertificateIssuer("");
+      setCertificateImage(null);
+      setCertificatePreview("");
+
+      fetchCertificates();
+      alert("Certificate added");
+    } catch (error) {
+      console.log(error);
+      alert("Certificate add failed");
+    }
+  };
+
+  const handleDeleteCertificate = async (id) => {
+    try {
+      await api.delete(`/certificates/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      fetchCertificates();
+      alert("Certificate deleted");
+    } catch (error) {
+      console.log(error);
+      alert("Certificate delete failed");
+    }
+  };
 
   const handlePhotoChange = (e) => {
     const file = e.target.files[0];
@@ -403,6 +471,75 @@ const Admin = () => {
           </button>
         </form>
       </div>
+
+      {/* Certificate................................................ */}
+      <div className="bg-white text-black p-8 rounded-xl max-w-2xl mx-auto mb-12">
+        <h2 className="text-2xl mb-6">Certificates</h2>
+
+        <form onSubmit={handleAddCertificate} className="space-y-4">
+          <input
+            className="border p-3 w-full rounded"
+            placeholder="Certificate Title"
+            value={certificateTitle}
+            onChange={(e) => setCertificateTitle(e.target.value)}
+          />
+
+          <input
+            className="border p-3 w-full rounded"
+            placeholder="Issuer Name"
+            value={certificateIssuer}
+            onChange={(e) => setCertificateIssuer(e.target.value)}
+          />
+
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleCertificateImageChange}
+          />
+
+          {certificatePreview && (
+            <img
+              src={certificatePreview}
+              alt="certificate preview"
+              className="w-48 h-32 object-cover rounded border"
+            />
+          )}
+
+          <button className="bg-indigo-600 text-white px-6 py-2 rounded">
+            Add Certificate
+          </button>
+        </form>
+
+        <div className="mt-6 space-y-4">
+          {certificates.map((item) => (
+            <div
+              key={item._id}
+              className="bg-slate-800 text-white p-4 rounded flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+            >
+              <div className="flex gap-4 items-center">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-24 h-20 object-cover rounded border"
+                />
+
+                <div>
+                  <p className="font-semibold">{item.title}</p>
+                  <p className="text-sm text-gray-300">{item.issuer}</p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => handleDeleteCertificate(item._id)}
+                className="bg-red-600 px-4 py-2 rounded text-white"
+              >
+                Delete
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* ............................................................. */}
 
       <div className="bg-white text-black p-8 rounded-xl max-w-2xl mx-auto mb-12">
         <h2 className="text-2xl mb-6">Skills</h2>

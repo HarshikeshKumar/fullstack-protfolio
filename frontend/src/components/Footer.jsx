@@ -15,7 +15,7 @@ const Footer = () => {
 
         <div className="flex gap-6 text-2xl">
           <a
-            href="https://github.com/yourusername"
+            href="https://github.com/HarshikeshKumar"
             target="_blank"
             rel="noreferrer"
             className="hover:text-white transition"
@@ -24,7 +24,7 @@ const Footer = () => {
           </a>
 
           <a
-            href="https://linkedin.com/in/yourusername"
+            href="https://www.linkedin.com/in/harshikesh-kumar/"
             target="_blank"
             rel="noreferrer"
             className="hover:text-blue-400 transition"
@@ -33,7 +33,7 @@ const Footer = () => {
           </a>
 
           <a
-            href="https://facebook.com/yourusername"
+            href="https://www.facebook.com/gaurav.singh.763646"
             target="_blank"
             rel="noreferrer"
             className="hover:text-blue-500 transition"
@@ -42,7 +42,7 @@ const Footer = () => {
           </a>
 
           <a
-            href="https://instagram.com/yourusername"
+            href="https://www.instagram.com/_gaurav_singh1725/"
             target="_blank"
             rel="noreferrer"
             className="hover:text-pink-400 transition"
@@ -51,7 +51,7 @@ const Footer = () => {
           </a>
 
           <a
-            href="https://stackoverflow.com/users/yourid"
+            href="https://stackoverflow.com/users/23549866/harshikesh-kumar"
             target="_blank"
             rel="noreferrer"
             className="hover:text-orange-400 transition"
@@ -60,7 +60,7 @@ const Footer = () => {
           </a>
 
           <a
-            href="mailto:your@email.com"
+            href="mailto:harshikeshkoili214@gmail.com"
             className="hover:text-red-400 transition"
           >
             <FaEnvelope />
@@ -69,6 +69,7 @@ const Footer = () => {
 
         <p className="text-sm text-gray-500">
           © {new Date().getFullYear()} My Portfolio. All rights reserved.
+          harshikeshkoili214@gmail.com
         </p>
       </div>
     </footer>

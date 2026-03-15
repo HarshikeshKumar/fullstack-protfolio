@@ -8,6 +8,7 @@ import ContactForm from "../components/ContactForm";
 import SkillCard from "../components/SkillCard";
 import Footer from "../components/Footer";
 import Education from "../components/Education";
+import Certificates from "../components/Certificates";
 
 export default function Home() {
   const [skills, setSkills] = useState([]);
@@ -42,6 +43,8 @@ export default function Home() {
       <Education />
 
       <Projects />
+
+      <Certificates />
 
       <section id="contact" className="py-20">
         <h2 className="text-center text-3xl mb-10">Contact Me</h2>

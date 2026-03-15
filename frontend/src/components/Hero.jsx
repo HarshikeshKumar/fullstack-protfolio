@@ -43,7 +43,7 @@ export default function Hero() {
         transition={{ duration: 1 }}
         className="text-5xl font-bold"
       >
-        Hi I'm Harshikesh 👋
+        Hi I'm Harshikesh kumar 👋
       </motion.h1>
 
       <motion.p
@@ -52,7 +52,19 @@ export default function Hero() {
         transition={{ delay: 0.5 }}
         className="mt-4 text-lg text-gray-400"
       >
-        Full Stack Developer (MERN)
+        My name is Harshikesh Kumar, and I am a passionate Full Stack Developer
+        with a strong interest in building modern and scalable web applications.
+        I belong to Bihar and currently live in Noida Sector 62. I completed my
+        BCA from M.P. Sinha Science College, Bihar and later pursued my MCA from
+        K.R. Mangalam University, Gurugram. Along with my academic studies, I
+        also completed a Full Stack Development course from Physics Wallah (PW)
+        to strengthen my practical development skills. I mainly work with the
+        MERN stack, using technologies like React, Node.js, Express, Tailwind
+        CSS, and Bootstrap to build responsive and efficient web applications.
+        My key projects include Mentor Hub and a Food Delivery Web Application,
+        where I worked on both frontend and backend development. I enjoy solving
+        problems through code and continuously learning new technologies to
+        improve my skills as a developer.
       </motion.p>
     </section>
   );
