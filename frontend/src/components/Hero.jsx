@@ -10,7 +10,7 @@ export default function Hero() {
       const res = await api.get("/profile-photo");
 
       if (res.data.photo) {
-        setPhoto(res.data.photo); // Cloudinary URL direct
+        setPhoto(res.data.photo);
       }
     } catch (err) {
       console.log(err);
@@ -21,51 +21,139 @@ export default function Hero() {
     fetchPhoto();
   }, []);
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 35 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
     <section
       id="home"
-      className="h-screen flex flex-col justify-center items-center text-center bg-slate-900 text-white"
+      className="relative min-h-screen overflow-hidden bg-slate-950 px-6 pt-28 text-white sm:px-10 lg:px-20"
     >
-      {photo && (
-        <motion.img
-          src={photo}
-          alt="profile"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1 }}
-          className="w-40 h-40 rounded-full object-cover mb-6 border-4 border-cyan-400 shadow-lg"
-        />
-      )}
+      {/* animated background */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute left-[-80px] top-10 h-72 w-72 rounded-full bg-cyan-500/20 blur-3xl animate-pulse"></div>
+        <div className="absolute right-[-80px] top-32 h-80 w-80 rounded-full bg-purple-500/20 blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-pink-500/20 blur-3xl animate-pulse"></div>
+      </div>
 
-      <motion.h1
-        initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-        className="text-5xl font-bold"
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-12 lg:flex-row"
       >
-        Hi I'm Harshikesh kumar 👋
-      </motion.h1>
+        {/* left content */}
+        <div className="max-w-3xl text-center lg:text-left">
+          <motion.span
+            variants={itemVariants}
+            className="mb-5 inline-block rounded-full border border-cyan-400/30 bg-cyan-400/10 px-4 py-1 text-sm font-medium text-cyan-300 backdrop-blur-md"
+          >
+            Full Stack Developer
+          </motion.span>
 
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 }}
-        className="mt-4 text-lg text-gray-400"
-      >
-        My name is Harshikesh Kumar, and I am a passionate Full Stack Developer
-        with a strong interest in building modern and scalable web applications.
-        I belong to Bihar and currently live in Noida Sector 62. I completed my
-        BCA from M.P. Sinha Science College, Bihar and later pursued my MCA from
-        K.R. Mangalam University, Gurugram. Along with my academic studies, I
-        also completed a Full Stack Development course from Physics Wallah (PW)
-        to strengthen my practical development skills. I mainly work with the
-        MERN stack, using technologies like React, Node.js, Express, Tailwind
-        CSS, and Bootstrap to build responsive and efficient web applications.
-        My key projects include Mentor Hub and a Food Delivery Web Application,
-        where I worked on both frontend and backend development. I enjoy solving
-        problems through code and continuously learning new technologies to
-        improve my skills as a developer.
-      </motion.p>
+          <motion.h1
+            variants={itemVariants}
+            className="text-4xl font-extrabold leading-tight sm:text-5xl md:text-6xl"
+          >
+            Hi, I'm{" "}
+            <span className="bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 bg-clip-text text-transparent">
+              Harshikesh Kumar
+            </span>{" "}
+            👋
+          </motion.h1>
+
+          <motion.h2
+            variants={itemVariants}
+            className="mt-4 text-lg font-medium text-slate-300 sm:text-xl md:text-2xl"
+          >
+            I build modern, responsive and scalable web applications.
+          </motion.h2>
+
+          <motion.p
+            variants={itemVariants}
+            className="mx-auto mt-6 max-w-2xl text-sm leading-7 text-slate-400 sm:text-base lg:mx-0"
+          >
+            I am a passionate Full Stack Developer with strong interest in MERN
+            stack development. I enjoy creating clean user interfaces, powerful
+            backend systems and real-world web applications. I have worked on
+            projects like Mentor Hub and Food Delivery Web Application, and I am
+            always excited to learn new technologies and improve my development
+            skills.
+          </motion.p>
+
+          <motion.div
+            variants={itemVariants}
+            className="mt-8 flex flex-col items-center gap-4 sm:flex-row lg:items-start"
+          >
+            <a
+              href="#projects"
+              className="rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 px-7 py-3 font-semibold text-white shadow-lg transition duration-300 hover:scale-105 hover:shadow-cyan-500/30"
+            >
+              View Projects
+            </a>
+
+            <a
+              href="#contact"
+              className="rounded-full border border-white/15 bg-white/5 px-7 py-3 font-semibold text-white backdrop-blur-md transition duration-300 hover:scale-105 hover:border-cyan-400/40 hover:text-cyan-300"
+            >
+              Contact Me
+            </a>
+          </motion.div>
+        </div>
+
+        {/* right image */}
+        <motion.div
+          variants={itemVariants}
+          className="relative flex justify-center"
+        >
+          <div className="absolute h-72 w-72 rounded-full bg-cyan-500/20 blur-3xl sm:h-80 sm:w-80 md:h-[420px] md:w-[420px]"></div>
+
+          {photo ? (
+            <motion.img
+              src={photo}
+              alt="profile"
+              animate={{ y: [0, -12, 0] }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="relative h-64 w-64 rounded-full border-4 border-cyan-400/40 object-cover shadow-2xl shadow-cyan-500/20 sm:h-80 sm:w-80 md:h-[380px] md:w-[380px]"
+            />
+          ) : (
+            <motion.div
+              animate={{ y: [0, -12, 0] }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className="relative flex h-64 w-64 items-center justify-center rounded-full border-4 border-cyan-400/40 bg-slate-800 text-4xl font-bold text-cyan-300 shadow-2xl shadow-cyan-500/20 sm:h-80 sm:w-80 md:h-[380px] md:w-[380px]"
+            >
+              HK
+            </motion.div>
+          )}
+        </motion.div>
+      </motion.div>
     </section>
   );
 }

@@ -9,69 +9,96 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="bg-slate-900 text-gray-400 border-t border-slate-700 mt-20">
-      <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col items-center gap-6">
-        <h2 className="text-xl font-semibold text-white">Connect With Me</h2>
+    <footer className="relative mt-24 overflow-hidden border-t border-white/10 bg-slate-950 text-gray-400">
+      {/* animated glow background */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute left-0 top-0 h-72 w-72 rounded-full bg-cyan-500/10 blur-3xl animate-pulse"></div>
+        <div className="absolute right-0 bottom-0 h-72 w-72 rounded-full bg-purple-500/10 blur-3xl animate-pulse"></div>
+      </div>
 
-        <div className="flex gap-6 text-2xl">
+      <div className="mx-auto max-w-6xl px-6 py-10 flex flex-col items-center gap-8 animate-fadeUp">
+        <h2 className="text-2xl font-semibold text-white">Connect With Me</h2>
+
+        {/* social icons */}
+        <div className="flex flex-wrap justify-center gap-6 text-2xl">
           <a
             href="https://github.com/HarshikeshKumar"
             target="_blank"
             rel="noreferrer"
-            className="hover:text-white transition"
+            className="group flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 backdrop-blur-md transition duration-300 hover:scale-110 hover:border-cyan-400 hover:text-white"
           >
-            <FaGithub />
+            <FaGithub className="transition duration-300 group-hover:rotate-12" />
           </a>
 
           <a
             href="https://www.linkedin.com/in/harshikesh-kumar/"
             target="_blank"
             rel="noreferrer"
-            className="hover:text-blue-400 transition"
+            className="group flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 backdrop-blur-md transition duration-300 hover:scale-110 hover:border-blue-400 hover:text-blue-400"
           >
-            <FaLinkedin />
+            <FaLinkedin className="transition duration-300 group-hover:rotate-12" />
           </a>
 
           <a
             href="https://www.facebook.com/gaurav.singh.763646"
             target="_blank"
             rel="noreferrer"
-            className="hover:text-blue-500 transition"
+            className="group flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 backdrop-blur-md transition duration-300 hover:scale-110 hover:border-blue-500 hover:text-blue-500"
           >
-            <FaFacebook />
+            <FaFacebook className="transition duration-300 group-hover:rotate-12" />
           </a>
 
           <a
             href="https://www.instagram.com/_gaurav_singh1725/"
             target="_blank"
             rel="noreferrer"
-            className="hover:text-pink-400 transition"
+            className="group flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 backdrop-blur-md transition duration-300 hover:scale-110 hover:border-pink-400 hover:text-pink-400"
           >
-            <FaInstagram />
+            <FaInstagram className="transition duration-300 group-hover:rotate-12" />
           </a>
 
           <a
             href="https://stackoverflow.com/users/23549866/harshikesh-kumar"
             target="_blank"
             rel="noreferrer"
-            className="hover:text-orange-400 transition"
+            className="group flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 backdrop-blur-md transition duration-300 hover:scale-110 hover:border-orange-400 hover:text-orange-400"
           >
-            <FaStackOverflow />
+            <FaStackOverflow className="transition duration-300 group-hover:rotate-12" />
           </a>
 
           <a
             href="mailto:harshikeshkoili214@gmail.com"
-            className="hover:text-red-400 transition"
+            className="group flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-white/5 backdrop-blur-md transition duration-300 hover:scale-110 hover:border-red-400 hover:text-red-400"
           >
-            <FaEnvelope />
+            <FaEnvelope className="transition duration-300 group-hover:rotate-12" />
           </a>
         </div>
 
-        <p className="text-sm text-gray-500">
+        <p className="text-center text-sm text-slate-400">
           © {new Date().getFullYear()} My Portfolio. All rights reserved.
-          harshikeshkoili214@gmail.com
+          <br />
+          <span className="text-slate-500">harshikeshkoili214@gmail.com</span>
         </p>
       </div>
+
+      <style>
+        {`
+          @keyframes fadeUp {
+            from {
+              opacity: 0;
+              transform: translateY(30px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+
+          .animate-fadeUp {
+            animation: fadeUp 0.8s ease forwards;
+          }
+        `}
+      </style>
     </footer>
   );
 };
