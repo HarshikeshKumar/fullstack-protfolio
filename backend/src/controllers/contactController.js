@@ -1,15 +1,3 @@
-// import Contact from "../models/Contact.js";
-// import sendEmail from "../utils/sendEmail.js";
-
-// export const sendContact = async (req, res) => {
-//   const contact = new Contact(req.body);
-//   await contact.save();
-
-//   await sendEmail(req.body);
-
-//   res.json({ message: "Message Sent" });
-// };
-
 import Contact from "../models/Contact.js";
 import sendEmail from "../utils/sendEmail.js";
 
