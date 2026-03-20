@@ -33,6 +33,10 @@ const Admin = () => {
   const [year, setYear] = useState("");
   const [eduDescription, setEduDescription] = useState("");
 
+  const [heroHeading, setHeroHeading] = useState("");
+  const [heroSubheading, setHeroSubheading] = useState("");
+  const [heroDescription, setHeroDescription] = useState("");
+
   const [editId, setEditId] = useState(null);
   const [editEduId, setEditEduId] = useState(null);
 
@@ -87,12 +91,24 @@ const Admin = () => {
     }
   };
 
+  const fetchHeroContent = async () => {
+    try {
+      const res = await api.get("/hero");
+      setHeroHeading(res.data.heading || "");
+      setHeroSubheading(res.data.subheading || "");
+      setHeroDescription(res.data.description || "");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchProjects();
     fetchSkills();
     fetchEducation();
     fetchProfilePhoto();
     fetchCertificates();
+    fetchHeroContent();
   }, []);
 
   const handleCertificateImageChange = (e) => {
@@ -194,6 +210,30 @@ const Admin = () => {
     } catch (error) {
       console.log(error);
       alert("Photo remove failed");
+    }
+  };
+
+  const handleUpdateHero = async (e) => {
+    e.preventDefault();
+
+    try {
+      await api.put(
+        "/hero",
+        {
+          heading: heroHeading,
+          subheading: heroSubheading,
+          description: heroDescription,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+
+      fetchHeroContent();
+      alert("Hero section updated");
+    } catch (error) {
+      console.log(error);
+      alert("Hero update failed");
     }
   };
 
@@ -387,7 +427,6 @@ const Admin = () => {
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-slate-950 px-4 py-10 text-white sm:px-6 lg:px-8">
-      {/* Background Glow */}
       <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
         <div className="absolute left-[-80px] top-10 h-72 w-72 rounded-full bg-cyan-500/20 blur-3xl animate-pulse"></div>
         <div className="absolute right-[-100px] top-40 h-80 w-80 rounded-full bg-purple-500/20 blur-3xl animate-pulse"></div>
@@ -409,6 +448,43 @@ const Admin = () => {
         </div>
 
         <div className="grid gap-8 lg:grid-cols-2">
+          {/* HERO SECTION */}
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl animate-fadeUp lg:col-span-2">
+            <h2 className="mb-6 text-2xl font-semibold text-white">
+              Edit Hero Section
+            </h2>
+
+            <form onSubmit={handleUpdateHero} className="space-y-4">
+              <input
+                type="text"
+                value={heroHeading}
+                onChange={(e) => setHeroHeading(e.target.value)}
+                placeholder="Heading"
+                className="w-full rounded-xl border border-white/10 bg-slate-900/70 p-3 text-white placeholder:text-slate-400 outline-none transition duration-300 focus:border-cyan-400"
+              />
+
+              <input
+                type="text"
+                value={heroSubheading}
+                onChange={(e) => setHeroSubheading(e.target.value)}
+                placeholder="Subheading"
+                className="w-full rounded-xl border border-white/10 bg-slate-900/70 p-3 text-white placeholder:text-slate-400 outline-none transition duration-300 focus:border-cyan-400"
+              />
+
+              <textarea
+                value={heroDescription}
+                onChange={(e) => setHeroDescription(e.target.value)}
+                placeholder="Description"
+                rows="6"
+                className="w-full rounded-xl border border-white/10 bg-slate-900/70 p-3 text-white placeholder:text-slate-400 outline-none transition duration-300 focus:border-cyan-400"
+              />
+
+              <button className="rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 font-semibold text-white transition duration-300 hover:scale-[1.02]">
+                Update Hero Section
+              </button>
+            </form>
+          </div>
+
           {/* PROFILE PHOTO */}
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl animate-fadeUp">
             <h2 className="mb-6 text-2xl font-semibold text-white">
@@ -427,7 +503,7 @@ const Admin = () => {
                 <img
                   src={preview}
                   alt="profile preview"
-                  className="h-40 w-40 rounded-full object-cover border-4 border-cyan-400/30 shadow-lg transition duration-500 hover:scale-105"
+                  className="h-40 w-40 rounded-full border-4 border-cyan-400/30 object-cover shadow-lg transition duration-500 hover:scale-105"
                 />
               </div>
             )}
@@ -480,7 +556,7 @@ const Admin = () => {
                 <img
                   src={previewImage}
                   alt="preview"
-                  className="h-40 w-full rounded-2xl object-cover border border-white/10 transition duration-500 hover:scale-[1.02]"
+                  className="h-40 w-full rounded-2xl border border-white/10 object-cover transition duration-500 hover:scale-[1.02]"
                 />
               )}
 
@@ -757,7 +833,7 @@ const Admin = () => {
                     <img
                       src={project.image}
                       alt={project.title}
-                      className="mb-4 h-44 w-full rounded-xl object-cover border border-white/10"
+                      className="mb-4 h-44 w-full rounded-xl border border-white/10 object-cover"
                     />
                   )}
 

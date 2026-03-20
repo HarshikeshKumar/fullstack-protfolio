@@ -10,6 +10,7 @@ import skillRoutes from "./routes/skillRoutes.js";
 import educationRoutes from "./routes/educationRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
 import certificateRoutes from "./routes/certificateRoutes.js";
+import heroRoutes from "./routes/heroRoutes.js";
 
 dotenv.config();
 
@@ -33,6 +34,7 @@ app.use("/api/skills", skillRoutes);
 app.use("/api/education", educationRoutes);
 app.use("/api", profileRoutes); // profile photo routes
 app.use("/api/certificates", certificateRoutes);
+app.use("/api", heroRoutes);
 
 app.listen(5000, () => {
   console.log("Server running on port 5000");

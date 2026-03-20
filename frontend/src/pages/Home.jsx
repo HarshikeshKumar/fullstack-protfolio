@@ -18,6 +18,7 @@ export default function Home() {
     const fetchSkills = async () => {
       try {
         const res = await api.get("/skills");
+        // console.log("Skills API Response:", res.data);
         setSkills(res.data);
       } catch (error) {
         console.error("Error fetching skills:", error);
@@ -40,7 +41,7 @@ export default function Home() {
 
       <Navbar />
 
-      <div className="animate-fadeIn">
+      <div id="home" className="animate-fadeIn">
         <Hero />
       </div>
 
@@ -103,7 +104,7 @@ export default function Home() {
         <Certificates />
       </div>
 
-      <section className="py-24 px-6 sm:px-10 animate-fadeUp">
+      <section id="contact" className="py-24 px-6 sm:px-10 animate-fadeUp">
         <div className="max-w-5xl mx-auto">
           <ContactForm />
         </div>

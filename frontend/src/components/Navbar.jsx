@@ -26,6 +26,7 @@ export default function Navbar() {
         <div className="hidden items-center gap-6 md:flex">
           <Link
             to="/"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className="relative group text-gray-300 hover:text-white transition"
           >
             Home
