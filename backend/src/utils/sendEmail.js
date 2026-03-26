@@ -27,24 +27,22 @@
 // };
 
 // export default sendEmail;
-
 import nodemailer from "nodemailer";
 
 const sendEmail = async ({ name, email, phone, message }) => {
   try {
-    console.log("Step 5: Inside sendEmail");
-    console.log("EMAIL_USER:", process.env.EMAIL_USER);
-    console.log("EMAIL_PASS exists:", !!process.env.EMAIL_PASS);
-
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
+      tls: {
+        rejectUnauthorized: false,
+      },
     });
-
-    console.log("Step 6: Transporter created");
 
     await transporter.sendMail({
       from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
