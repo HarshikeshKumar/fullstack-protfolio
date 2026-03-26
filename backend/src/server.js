@@ -36,6 +36,6 @@ app.use("/api", profileRoutes); // profile photo routes
 app.use("/api/certificates", certificateRoutes);
 app.use("/api", heroRoutes);
 
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
+app.listen(process.env.PORT, () => {
+  console.log(`Server running on port ${process.env.PORT}`);
 });
