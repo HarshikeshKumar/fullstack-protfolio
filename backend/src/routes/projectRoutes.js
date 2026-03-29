@@ -23,11 +23,8 @@ const storage = new CloudinaryStorage({
 const upload = multer({ storage });
 
 router.get("/", getProjects);
-
 router.post("/", upload.single("image"), addProject);
-
-router.put("/:id", updateProject);
-
+router.put("/:id", upload.single("image"), updateProject);
 router.delete("/:id", deleteProject);
 
 export default router;

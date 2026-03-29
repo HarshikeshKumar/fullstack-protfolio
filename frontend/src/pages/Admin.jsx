@@ -39,6 +39,7 @@ const Admin = () => {
 
   const [editId, setEditId] = useState(null);
   const [editEduId, setEditEduId] = useState(null);
+  const [editProjectId, setEditProjectId] = useState(null);
 
   const token = localStorage.getItem("token");
 
@@ -245,6 +246,16 @@ const Admin = () => {
     setPreviewImage(URL.createObjectURL(file));
   };
 
+  const resetProjectForm = () => {
+    setTitle("");
+    setDescription("");
+    setImage(null);
+    setPreviewImage("");
+    setGithub("");
+    setLive("");
+    setEditProjectId(null);
+  };
+
   const handleAddProject = async (e) => {
     e.preventDefault();
 
@@ -253,7 +264,9 @@ const Admin = () => {
 
       formData.append("title", title);
       formData.append("description", description);
-      formData.append("image", image);
+      if (image) {
+        formData.append("image", image);
+      }
       formData.append("github", github);
       formData.append("live", live);
 
@@ -264,18 +277,53 @@ const Admin = () => {
         },
       });
 
-      setTitle("");
-      setDescription("");
-      setImage(null);
-      setPreviewImage("");
-      setGithub("");
-      setLive("");
-
+      resetProjectForm();
       fetchProjects();
       alert("Project added");
     } catch (error) {
       console.log(error);
       alert("Project add failed");
+    }
+  };
+
+  const handleEditProject = (project) => {
+    setTitle(project.title || "");
+    setDescription(project.description || "");
+    setGithub(project.github || "");
+    setLive(project.live || "");
+    setPreviewImage(project.image || "");
+    setImage(null);
+    setEditProjectId(project._id);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleUpdateProject = async (e) => {
+    e.preventDefault();
+
+    try {
+      const formData = new FormData();
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("github", github);
+      formData.append("live", live);
+
+      if (image) {
+        formData.append("image", image);
+      }
+
+      await api.put(`/projects/${editProjectId}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      resetProjectForm();
+      fetchProjects();
+      alert("Project updated");
+    } catch (error) {
+      console.log(error);
+      alert("Project update failed");
     }
   };
 
@@ -448,7 +496,6 @@ const Admin = () => {
         </div>
 
         <div className="grid gap-8 lg:grid-cols-2">
-          {/* HERO SECTION */}
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl animate-fadeUp lg:col-span-2">
             <h2 className="mb-6 text-2xl font-semibold text-white">
               Edit Hero Section
@@ -485,7 +532,6 @@ const Admin = () => {
             </form>
           </div>
 
-          {/* PROFILE PHOTO */}
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl animate-fadeUp">
             <h2 className="mb-6 text-2xl font-semibold text-white">
               Profile Photo
@@ -525,13 +571,15 @@ const Admin = () => {
             </div>
           </div>
 
-          {/* ADD PROJECT */}
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl animate-fadeUp">
             <h2 className="mb-6 text-2xl font-semibold text-white">
-              Add Project
+              {editProjectId ? "Edit Project" : "Add Project"}
             </h2>
 
-            <form onSubmit={handleAddProject} className="space-y-4">
+            <form
+              onSubmit={editProjectId ? handleUpdateProject : handleAddProject}
+              className="space-y-4"
+            >
               <input
                 className="w-full rounded-xl border border-white/10 bg-slate-900/70 p-3 text-white placeholder:text-slate-400 outline-none transition duration-300 focus:border-cyan-400"
                 placeholder="Title"
@@ -574,13 +622,24 @@ const Admin = () => {
                 onChange={(e) => setLive(e.target.value)}
               />
 
-              <button className="w-full rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 font-semibold text-white transition duration-300 hover:scale-[1.02]">
-                Add Project
-              </button>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <button className="w-full rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-3 font-semibold text-white transition duration-300 hover:scale-[1.02]">
+                  {editProjectId ? "Update Project" : "Add Project"}
+                </button>
+
+                {editProjectId && (
+                  <button
+                    type="button"
+                    onClick={resetProjectForm}
+                    className="w-full rounded-xl bg-slate-700 px-6 py-3 font-semibold text-white transition duration-300 hover:scale-[1.02]"
+                  >
+                    Cancel Edit
+                  </button>
+                )}
+              </div>
             </form>
           </div>
 
-          {/* CERTIFICATES */}
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl animate-fadeUp lg:col-span-2">
             <h2 className="mb-6 text-2xl font-semibold text-white">
               Certificates
@@ -667,7 +726,6 @@ const Admin = () => {
             </div>
           </div>
 
-          {/* SKILLS */}
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl animate-fadeUp">
             <h2 className="mb-6 text-2xl font-semibold text-white">Skills</h2>
 
@@ -727,7 +785,6 @@ const Admin = () => {
             </div>
           </div>
 
-          {/* EDUCATION */}
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl animate-fadeUp">
             <h2 className="mb-6 text-2xl font-semibold text-white">
               Education
@@ -812,7 +869,6 @@ const Admin = () => {
             </div>
           </div>
 
-          {/* PROJECT LIST */}
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl backdrop-blur-xl animate-fadeUp lg:col-span-2">
             <h2 className="mb-6 text-2xl font-semibold text-white">
               All Projects
@@ -840,6 +896,7 @@ const Admin = () => {
                   <h3 className="text-lg font-semibold text-white">
                     {project.title}
                   </h3>
+
                   <p className="mt-2 line-clamp-3 text-sm text-slate-300">
                     {project.description}
                   </p>
@@ -866,6 +923,13 @@ const Admin = () => {
                         Live
                       </a>
                     )}
+
+                    <button
+                      onClick={() => handleEditProject(project)}
+                      className="rounded-lg bg-yellow-500 px-3 py-2 text-sm text-white transition hover:scale-105"
+                    >
+                      Edit
+                    </button>
 
                     <button
                       onClick={() => handleDeleteProject(project._id)}
